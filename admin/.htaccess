@@ -1,0 +1,8 @@
+AuthUserFile /home/www/html/review-site.com/admin/.htpasswd
+AuthGroupFile /dev/null
+AuthType Basic
+AuthName "please enter your ID and password"
+require valid-user
+<Files ~ "^\.(htpasswd|htaccess)$">
+deny from all
+</Files>

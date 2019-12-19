@@ -1,6 +1,7 @@
 <?php
-include('lib/session.php');
+include('../lib/session.php');
 Session::loginCheck();
+define('COMMENTS_PER_PAGE', 5);
 
 try {
     $pdo = new PDO('mysql:dbname=mydb;host=localhost', 'root', 'root');
@@ -9,8 +10,27 @@ try {
     echo 'データベースの接続に失敗しました';
     echo $e->getMessages;
 }
-$sql = 'select * from contents';
-$res = $pdo->query($sql);
+
+if (!empty($_GET['page'])) {
+    $page = (int)$_GET['page'];
+} else {
+    $page = 1;
+}
+
+//select * from contents limit offset, count;
+//page offset count
+//1    0      5
+//2    5      5
+//3    10     5
+
+$offset = COMMENTS_PER_PAGE * ($page - 1);
+$sql = "select * from contents limit {$offset}, 5";
+$contents = array();
+foreach ($pdo->query($sql) as $row) {
+    array_push($contents, $row);
+}
+$total = $pdo->query('select count(*) from contents')->fetchColumn();
+$total_pages = ceil($total / COMMENTS_PER_PAGE);
 ?>
 
 <!DOCTYPE html>
@@ -27,21 +47,20 @@ $res = $pdo->query($sql);
                     <th>id</th>
                     <th>タイトル</th>
                     <th>画像</th>
-                    <th>投稿日</th>
-                    <th>更新日</th>
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ($res as $value) : ?>
+            <?php foreach ($contents as $value) : ?>
                 <tr>
                     <td><?php echo $value['content_id']; ?></td>
                     <td><a href="post.php?id=<?php echo $value['content_id']; ?>"><?php echo $value['content_title']; ?></td>
-                    <td><img src="<?php echo '/upload_image/' . $value['content_fileName']; ?>"></td>
-                    <td><?php echo $value['created_at']; ?></td>
-                    <td><?php echo $value['updated_at']; ?></td>
+                    <td><img src="<?php echo '/upload_image/' . $value['content_file_name']; ?>"></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
         </table>
+        <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+        <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+        <?php endfor; ?>
     </body>
 </html>

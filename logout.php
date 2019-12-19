@@ -4,8 +4,6 @@ session_destroy();
 $msg = 'ログアウトしました';
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="ja">
     <head>

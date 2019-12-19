@@ -12,12 +12,11 @@ try {
 }
 $sql = 'insert into posts(post_comment, post_user_id, post_content_id, created_at, updated_at) values(:post_comment, :post_user_id, :post_content_id, now(), now())';
 $data = $pdo->prepare($sql);
-$params = array(':post_comment' => $review, ':post_user_id' => $_SESSION['user_id'], ':post_content_id' => $_SESSION['content_id']);
+$params = array(':post_comment' => $review, ':post_user_id' => $_SESSION['user_id'], ':post_content_id' => $_POST['content_id']);
 $box = $data->execute($params);
 if ($box) {
-    header('Location: ./post_end2.php');
+    header('Location: ./post_end2.php?id=' . $_POST['content_id']);
 } else {
     echo 'エラーが発生しました。投稿し直して下さい。';
 }
-
 ?>

@@ -1,5 +1,5 @@
 <?php
-include('lib/session.php');
+include('../../lib/session.php');
 ?>
 
 <!DOCTYPE html>

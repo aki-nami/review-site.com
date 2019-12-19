@@ -1,3 +1,7 @@
+<?php
+$id = $_GET['id'];
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
     <head>
@@ -6,7 +10,7 @@
     </head>
     <body>
         <h3>投稿が完了しました。</h3>
-        <a href="./list.php">戻る</a>
+        <a href="./post.php?id=<?php echo $id; ?>">戻る</a>
     </body>
 </html>
 

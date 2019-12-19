@@ -1,7 +1,8 @@
 <?php
-include('lib/db.php');
+include('../lib/db.php');
 session_start();
 $id = $_GET['delete_id'];
+$content_id = $_GET['content_id'];
 try {
     $pdo = new PDO('mysql:dbname=mydb;host=localhost', 'root', 'root');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -9,11 +10,16 @@ try {
     echo 'データベースの接続に失敗しました';
     echo $e->getMessages;
 }
-$sql = 'update posts set delete_flg = 1 where post_id = :post_id';
+$sql = 'select * from posts where post_id = :post_id';
 $data = $pdo->prepare($sql);
 $params = array(':post_id' => $id);
-$user = $data->execute($params);
-if (!empty($user)) {
+$data->execute($params);
+$user = $data->fetch(PDO::FETCH_ASSOC);
+if (!empty($user) && $_SESSION['user_id'] == $user['post_user_id']) {
+    $sql = 'update posts set delete_flg = 1 where post_id = :post_id';
+    $data = $pdo->prepare($sql);
+    $params = array(':post_id' => $id);
+    $data->execute($params);
     $msg = 'コメントを削除しました';
 } else {
     $msg = 'コメントを削除できませんでした';
@@ -28,6 +34,6 @@ if (!empty($user)) {
     </head>
     <body>
         <?php echo $msg; ?>
-        <a href="./index.php">TOPへ戻る</a>
+        <a href="./post.php?id=<?php echo $content_id; ?>">戻る</a>
     </body>
 </html>

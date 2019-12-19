@@ -27,18 +27,14 @@ imagejpeg($image, $dir . 'thumbnail' . $name);
 $path = $dir . 'thumbnail'. $name;
 $newName = 'thumbnail' . $name;
 if (!empty($name)) {
-    $sql = 'insert into contents(content_title, content_fileName, content_image, content_type, content_size, content_user_id, created_at, updated_at) values(:content_title, :content_fileName, :content_image, :content_type, :content_size, :content_user_id, now(), now())';
+    $sql = 'insert into contents(content_title, content_file_name, content_image, content_type, content_size, content_user_id, created_at, updated_at) values(:content_title, :content_file_name, :content_image, :content_type, :content_size, :content_user_id, now(), now())';
     $data = $pdo->prepare($sql);
-    $params = array(':content_title' => $title, 'content_fileName' => $newName, ':content_image' => $path, ':content_type' => $type, ':content_size' => $size, ':content_user_id' =>  $_SESSION['user_id']);
+    $params = array(':content_title' => $title, 'content_file_name' => $newName, ':content_image' => $path, ':content_type' => $type, ':content_size' => $size, ':content_user_id' =>  $_SESSION['user_id']);
     $data->execute($params);
-    echo 'アップロード完了';
+    $msg =  'アップロード完了';
 } else {
-    echo 'アップロード失敗';
+    $msg =  'アップロード失敗';
 }
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +44,7 @@ if (!empty($name)) {
         <title>画像アップロードページ</title>
     </head>
     <body>
+        <?php echo $msg; ?>
         <a href='./index.php'>一覧ページへ</a>
     </body>
 </html>
