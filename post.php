@@ -22,6 +22,7 @@ $box1 = $db->fetchAll($sql, $params);
 
 $page_sql = 'select count(*) from posts where post_content_id = :post_content_id and delete_flg = 0';
 $page_params = array(':post_content_id' => $id);
+//条件に一致するカラムを件数で取得
 $total = $db->fetchColumn($page_sql, $page_params);
 $total_pages = ceil($total / COMMENTS_PER_PAGE);
 
