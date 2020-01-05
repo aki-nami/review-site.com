@@ -22,7 +22,7 @@
                 <br>
                 <label for="password">パスワード</label>
                 <input type="password" id="password" name="user_pass" placeholder="パスワードを入力">
-                <input type="password" id="password" name="user_pass2" placeholder="もう一入度力">
+                <input type="password" id="password2" name="user_pass2" placeholder="もう一入度力">
                 <br>
             </fieldset>
             <input type="submit" name="submit" value="送信">
