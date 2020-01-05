@@ -16,7 +16,7 @@ $stmt = $pdo->prepare($sql);
 $params = array(':post_comment' => $review, ':post_user_id' => $_SESSION['user_id'], ':post_content_id' => $_POST['content_id']);
 $posts_data = $stmt->execute($params);
 if ($posts_data) {
-    header('Location: ./post_execute2.php?id=' . $_POST['content_id']);
+    header('Location: ./post_complete.php?id=' . $_POST['content_id']);
 } else {
     echo 'エラーが発生しました。投稿し直して下さい。';
 }
